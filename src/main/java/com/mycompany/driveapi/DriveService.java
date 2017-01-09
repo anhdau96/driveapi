@@ -51,7 +51,7 @@ public class DriveService {
      * at ~/.credentials/drive-java-quickstart
      */
     private static final List<String> SCOPES =
-        Arrays.asList(DriveScopes.DRIVE_METADATA_READONLY);
+        Arrays.asList(DriveScopes.DRIVE);
 
     static {
         try {
@@ -98,7 +98,7 @@ public class DriveService {
         Credential credential = authorize();
         return new Drive.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, credential)
-                .setApplicationName(APPLICATION_NAME)
+                    .setApplicationName(APPLICATION_NAME)
                 .build();
     }
 }
