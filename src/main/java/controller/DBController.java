@@ -120,7 +120,7 @@ public class DBController {
     public List<DownloadInfo> getNotDownload() throws SQLException, ClassNotFoundException {
         Connection conn = Connect.getConnection();
         Statement stmt = conn.createStatement();
-        String sql = "SELECT * FROM MOVIES WHERE TYPE !='serie' AND DOWNLOAD = 0";
+        String sql = "SELECT * FROM MOVIES WHERE QUALITY !='serie' AND DOWNLOAD = 0";
         ResultSet rs = stmt.executeQuery(sql);
         List<DownloadInfo> lstFile = new ArrayList<>();
         while (rs.next()) {
