@@ -15,32 +15,37 @@ import java.sql.Statement;
  */
 public class InitDatabase {
 
-    public void create() throws SQLException, ClassNotFoundException {
+    public static void create() throws SQLException, ClassNotFoundException {
         Connection conn = Connect.getConnection();
 
         Statement stmt = conn.createStatement();
+        String drop = "DROP TABLE IF EXISTS MOVIES;"
+                + "DROP TABLE IF EXISTS EPS;"
+                + "DROP TABLE IF EXISTS LOG;";
         String sql = "CREATE TABLE MOVIES "
-                + "(ID INT PRIMARY KEY             NOT NULL, "
+                + "(ID INTEGER PRIMARY KEY             AUTOINCREMENT, "
                 + " NAME           VARCHAR(150)    NOT NULL, "
                 + " YEAR           VARCHAR(5)      NOT NULL, "
                 + " URL            VARCHAR(200)    NOT NULL, "
                 + " FILE           VARCHAR(150)    NOT NULL, "
+                + " QUALITY        VARCHAR(6)      NULL    , "
                 + " UPLOAD         BIT                     , "
-                + " DOWNLOAD       BIT                       ";
+                + " DOWNLOAD       BIT                       );";
         String sql1 = "CREATE TABLE EPS "
-                + "(ID INT PRIMARY KEY             NOT NULL,"
+                + "(ID INTEGER PRIMARY KEY             AUTOINCREMENT,"
                 + " MOVIEID        INT             NOT NULL, "
                 + " EP             INT             NOT NULL, "
                 + " URL            VARCHAR(200)    NOT NULL, "
                 + " FILE           VARCHAR(150)    NOT NULL, "
                 + " UPLOAD         BIT                     , "
-                + " DOWNLOAD       BIT                       ";
-        String sql2 = "CREATE TABLE LOG " +
-                   "(ID INT PRIMARY KEY     NOT NULL," +
-                   " ERROR          TEXT    NOT NULL "; 
-        stmt.executeUpdate(sql); 
-        stmt.executeUpdate(sql1); 
-        stmt.executeUpdate(sql2); 
+                + " DOWNLOAD       BIT                     );";
+        String sql2 = "CREATE TABLE LOG "
+                + "(ID INTEGER PRIMARY KEY     AUTOINCREMENT,"
+                + " ERROR          TEXT    NOT NULL );";
+        stmt.executeUpdate(drop);
+        stmt.executeUpdate(sql);
+        stmt.executeUpdate(sql1);
+        stmt.executeUpdate(sql2);
         stmt.close();
         conn.close();
     }

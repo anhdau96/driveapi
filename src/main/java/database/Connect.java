@@ -21,7 +21,7 @@ public class Connect {
     } 
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        if (conn == null) {
+        if (conn == null || conn.isClosed()) {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:movies.db");
         }

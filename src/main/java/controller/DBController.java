@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.Episode;
 import model.Movie;
 
 /**
@@ -21,22 +22,23 @@ import model.Movie;
  */
 public class DBController {
 
-    public void insertMovies(String name, String year, String url, String file) throws ClassNotFoundException, SQLException {
+    public void insertMovies(String name, String year, String url, String file, String quality) throws ClassNotFoundException, SQLException {
         Connection conn = Connect.getConnection();
-        PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILE,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?)");
+        PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILE,QUALITY,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?,?)");
         pt.setString(1, name);
         pt.setString(2, year);
         pt.setString(3, url);
         pt.setString(4, file);
-        pt.setInt(5, 0);
+        pt.setString(5, quality);
         pt.setInt(6, 0);
+        pt.setInt(7, 0);
         pt.execute();
         conn.close();
     }
 
     public void insertEps(int movieId, int ep, String url, String file) throws ClassNotFoundException, SQLException {
         Connection conn = Connect.getConnection();
-        PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (MOVIEID,EP,URL,FILE,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?)");
+        PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILE,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?)");
         pt.setInt(1, movieId);
         pt.setInt(2, ep);
         pt.setString(3, url);
@@ -62,7 +64,7 @@ public class DBController {
         pt.execute();
         conn.close();
     }
-    
+
     public void updateUpload(int id, String type) throws ClassNotFoundException, SQLException {
         Connection conn = Connect.getConnection();
         PreparedStatement pt;
@@ -78,15 +80,42 @@ public class DBController {
         pt.execute();
         conn.close();
     }
-    
-    public List<Movie> getAllMovie() throws ClassNotFoundException, SQLException{
+
+    public List<Movie> getAllMovie() throws ClassNotFoundException, SQLException {
         Connection conn = Connect.getConnection();
         Statement stmt = conn.createStatement();
         String sql = "SELECT * FROM MOVIES";
         ResultSet rs = stmt.executeQuery(sql);
         List<Movie> lstMovie = new ArrayList<>();
-        while (rs.next()) {            
-            lstMovie.add(new Movie())
+        while (rs.next()) {
+            lstMovie.add(new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getByte(7), rs.getByte(8)));
         }
+        conn.close();
+        return lstMovie;
+    }
+
+    public List<Episode> getAllEpisodes(int movieId) throws ClassNotFoundException, SQLException {
+        Connection conn = Connect.getConnection();
+        Statement stmt = conn.createStatement();
+        String sql = "SELECT * FROM EPS WHERE MOVIEID = " +movieId;
+        ResultSet rs = stmt.executeQuery(sql);
+        List<Episode> lstEpisodes = new ArrayList<>();
+        while (rs.next()) {
+            lstEpisodes.add(new Episode(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getByte(6), rs.getByte(7)));
+        }
+        conn.close();
+        return lstEpisodes;
+    }
+    
+    public int getMovieId(String name, String year) throws SQLException, ClassNotFoundException{
+        Connection conn = Connect.getConnection();
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE NAME = ? AND YEAR = ?");
+        pst.setString(1, name);
+        pst.setString(2, year);
+        ResultSet rs = pst.executeQuery();
+        rs.next();
+        int id = rs.getInt(1);
+        conn.close();
+        return id;
     }
 }
