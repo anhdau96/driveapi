@@ -1,5 +1,6 @@
 package com.mycompany.driveapi;
 
+import UI.UploadManager;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
 
@@ -11,22 +12,32 @@ import java.text.NumberFormat;
  */
 public class FileUploadProgressListener implements MediaHttpUploaderProgressListener {
 
+    private String progress = "";
+    private UploadManager uploadManager;
+    public FileUploadProgressListener(UploadManager uploadManager) {
+    this.uploadManager=uploadManager;
+    }
+
     @Override
     public void progressChanged(MediaHttpUploader mediaHttpUploader) throws IOException {
         switch (mediaHttpUploader.getUploadState()) {
             case INITIATION_STARTED:
-                System.out.println("Upload Initiation has started.");
+                uploadManager.updateStatus("Upload Initiation has started.");
                 break;
             case INITIATION_COMPLETE:
-                System.out.println("Upload Initiation is Complete.");
+                uploadManager.updateStatus("Upload Initiation is Complete.");
                 break;
             case MEDIA_IN_PROGRESS:
-                System.out.println("Upload is In Progress: "
+                uploadManager.updateStatus("Upload is In Progress: "
                         + NumberFormat.getPercentInstance().format(mediaHttpUploader.getProgress()));
                 break;
             case MEDIA_COMPLETE:
-                System.out.println("Upload is Complete!");
+                uploadManager.updateStatus("Upload is Complete!");
                 break;
         }
+    }
+
+    public String getProgress() {
+        return progress;
     }
 }
