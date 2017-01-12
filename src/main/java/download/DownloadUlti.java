@@ -5,6 +5,7 @@
  */
 package download;
 
+import Config.ConfigService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -86,7 +87,6 @@ public class DownloadUlti {
         WebElement findElement1 = findElements.get(eps - 1);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", findElement1);
-        String ep = findElement1.getText();
         try {
             Thread.sleep(12000 + r.nextInt(2000));
         } catch (InterruptedException ex) {
@@ -96,7 +96,7 @@ public class DownloadUlti {
         Elements elementsByTag = parse.getElementsByTag("video");
         String link = elementsByTag.get(0).attr("src");
         try {
-            getGoogleDownload(link, title + ep);
+            getGoogleDownload(link,title);
         } catch (IOException ex) {
             Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -107,6 +107,6 @@ public class DownloadUlti {
         Runtime rt = Runtime.getRuntime();
         fileName = fileName.replaceAll(" ", "");
         link = redirect(link);
-        rt.exec("C:\\Program Files (x86)\\Internet Download Manager\\idman.exe /n /d " + link + " /p C:\\Download /f " + fileName + ".mp4");
+        rt.exec("C:\\Program Files (x86)\\Internet Download Manager\\idman.exe /n /d " + link + " /p "+ConfigService.getInstance().get("savePath")+" /f " + fileName + ".mp4");
     }
 }

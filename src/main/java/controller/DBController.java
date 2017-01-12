@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.DownloadInfo;
 import model.Episode;
 import model.FileUpload;
 import model.Movie;
@@ -50,19 +51,15 @@ public class DBController {
         conn.close();
     }
 
-    public void updateDownload(int id, String type) throws ClassNotFoundException, SQLException {
+    public void updateDownload(String file) throws ClassNotFoundException, SQLException {
         Connection conn = Connect.getConnection();
-        PreparedStatement pt;
-        if (type.compareTo("movie") == 0) {
-            pt = conn.prepareStatement("UPDATE MOVIES SET DOWNLOAD = ? WHERE ID = ?");
-            pt.setInt(1, 1);
-            pt.setInt(2, id);
-        } else {
-            pt = conn.prepareStatement("UPDATE EPS SET DOWNLOAD = ? WHERE ID = ?");
-            pt.setInt(1, 1);
-            pt.setInt(2, id);
-        }
-        pt.execute();
+        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET DOWNLOAD = ? WHERE FILE = ?");
+        pt.setInt(1, 1);
+        pt.setString(2, file);
+        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET DOWNLOAD = ? WHERE ID = ?");
+        pt1.setInt(1, 1);
+        pt1.setString(2, file);
+        pt1.execute();
         conn.close();
     }
 
@@ -120,19 +117,19 @@ public class DBController {
         return id;
     }
 
-    public List<FileUpload> getNotUpload() throws SQLException, ClassNotFoundException {
+    public List<DownloadInfo> getNotDownload() throws SQLException, ClassNotFoundException {
         Connection conn = Connect.getConnection();
         Statement stmt = conn.createStatement();
-        String sql = "SELECT * FROM MOVIES WHERE TYPE !='serie' AND UPLOAD = 0";
+        String sql = "SELECT * FROM MOVIES WHERE TYPE !='serie' AND DOWNLOAD = 0";
         ResultSet rs = stmt.executeQuery(sql);
-        List<FileUpload> lstFile = new ArrayList<>();
+        List<DownloadInfo> lstFile = new ArrayList<>();
         while (rs.next()) {
-            lstFile.add(new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6)));
+            lstFile.add(new DownloadInfo(rs.getInt(1), rs.getString(4), rs.getString(5), 1));
         }
-        String sql1 = "SELECT * FROM EPS WHERE UPLOAD = 0";
+        String sql1 = "SELECT * FROM EPS WHERE DOWNLOAD = 0";
         ResultSet rs1 = stmt.executeQuery(sql1);
         while (rs1.next()) {
-            lstFile.add(new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6)));
+            lstFile.add(new DownloadInfo(rs1.getInt(1), rs.getString(4), rs.getString(5), rs.getByte(6)));
         }
         conn.close();
         return lstFile;

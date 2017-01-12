@@ -5,6 +5,7 @@
  */
 package crawl;
 
+import Config.ConfigService;
 import controller.DBController;
 import java.io.IOException;
 import java.net.URI;
@@ -23,7 +24,16 @@ import org.jsoup.select.Elements;
  *
  * @author Viet Bac
  */
-public class Crawl {
+public class Crawl extends Thread{
+
+    @Override
+    public void run() {
+        try {
+            Crawl();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Crawl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public CrawlUI cUI;
 
@@ -128,7 +138,7 @@ public class Crawl {
         JsonReader reader = new JsonReader();
         URI uri = new URIBuilder()
                 .setScheme("http")
-                .setHost("bc614315.ngrok.io")
+                .setHost(ConfigService.getInstance().get("apiURL"))
                 .setPath("/api/auto/movie/" + title + "/" + year)
                 .build();
         HttpGet httpget = new HttpGet(uri);
@@ -140,7 +150,7 @@ public class Crawl {
         JsonReader reader = new JsonReader();
         URI uri = new URIBuilder()
                 .setScheme("http")
-                .setHost("bc614315.ngrok.io")
+                .setHost(ConfigService.getInstance().get("apiURL"))
                 .setPath("/api/auto/movie/" + title + "/" + year + "/" + season)
                 .build();
         HttpGet httpget = new HttpGet(uri);

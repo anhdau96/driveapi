@@ -11,12 +11,12 @@ package model;
  */
 public class DownloadInfo {
     public int id;
-    public String type;
+    public String link;
     public String file;
     public int eps;
-    public DownloadInfo(int id, String type, String file, int eps) {
+    public DownloadInfo(int id, String type, String link, int eps) {
         this.id = id;
-        this.type = type;
+        this.link = link;
         this.file = file;
         this.eps = eps;
     }
