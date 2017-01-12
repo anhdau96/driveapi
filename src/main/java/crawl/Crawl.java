@@ -6,7 +6,6 @@
 package crawl;
 
 import controller.DBController;
-import database.InitDatabase;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,7 +25,7 @@ import org.jsoup.select.Elements;
  */
 public class Crawl {
 
-    CrawlUI cUI;
+    public CrawlUI cUI;
 
     public void Crawl() throws ClassNotFoundException, SQLException {
         try {
@@ -159,20 +158,5 @@ public class Crawl {
         HttpGet httpget = new HttpGet(uri);
         String json = reader.readJsonFromUrl(httpget.getURI().toString());
         return  json.equals("1"); 
-    }
-
-    public static void main(String[] args) {
-        try {
-            InitDatabase.create();
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Crawl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Crawl c = new Crawl();
-        c.cUI = new CrawlUI();
-        try {
-            c.Crawl();
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(Crawl.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

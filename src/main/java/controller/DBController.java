@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Episode;
+import model.FileUpload;
 import model.Movie;
 
 /**
@@ -97,7 +98,7 @@ public class DBController {
     public List<Episode> getAllEpisodes(int movieId) throws ClassNotFoundException, SQLException {
         Connection conn = Connect.getConnection();
         Statement stmt = conn.createStatement();
-        String sql = "SELECT * FROM EPS WHERE MOVIEID = " +movieId;
+        String sql = "SELECT * FROM EPS WHERE MOVIEID = " + movieId;
         ResultSet rs = stmt.executeQuery(sql);
         List<Episode> lstEpisodes = new ArrayList<>();
         while (rs.next()) {
@@ -106,8 +107,8 @@ public class DBController {
         conn.close();
         return lstEpisodes;
     }
-    
-    public int getMovieId(String name, String year) throws SQLException, ClassNotFoundException{
+
+    public int getMovieId(String name, String year) throws SQLException, ClassNotFoundException {
         Connection conn = Connect.getConnection();
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE NAME = ? AND YEAR = ?");
         pst.setString(1, name);
@@ -117,5 +118,44 @@ public class DBController {
         int id = rs.getInt(1);
         conn.close();
         return id;
+    }
+
+    public List<FileUpload> getNotUpload() throws SQLException, ClassNotFoundException {
+        Connection conn = Connect.getConnection();
+        Statement stmt = conn.createStatement();
+        String sql = "SELECT * FROM MOVIES WHERE TYPE !='serie' AND UPLOAD = 0";
+        ResultSet rs = stmt.executeQuery(sql);
+        List<FileUpload> lstFile = new ArrayList<>();
+        while (rs.next()) {
+            lstFile.add(new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6)));
+        }
+        String sql1 = "SELECT * FROM EPS WHERE UPLOAD = 0";
+        ResultSet rs1 = stmt.executeQuery(sql1);
+        while (rs1.next()) {
+            lstFile.add(new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6)));
+        }
+        conn.close();
+        return lstFile;
+    }
+
+    public FileUpload findFile(String fileName) throws SQLException, ClassNotFoundException {
+        Connection conn = Connect.getConnection();
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ?");
+        pst.setString(1, fileName);
+        ResultSet rs = pst.executeQuery();
+        boolean next = rs.next();
+        if (next) {
+            conn.close();
+            return new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6));
+        }
+        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ?");
+        pst1.setString(1, fileName);
+        ResultSet rs1 = pst1.executeQuery();
+        boolean next1 = rs1.next();
+        if (next1) {
+            conn.close();
+            return new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6));
+        }
+        return null;
     }
 }

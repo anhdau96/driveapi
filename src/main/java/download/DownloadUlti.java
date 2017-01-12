@@ -41,36 +41,36 @@ public class DownloadUlti {
         return null;
     }
 
-    public static void download(String url, String title) {
-        Random r = new Random();
-        WebDriver driver = ChromeDriverClient.getChromeDriver();
-        driver.get(url);
-        try {
-            Thread.sleep(12000 + r.nextInt(2000));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        WebElement findElement = driver.findElement(By.className("les-content"));
-        List<WebElement> findElements = findElement.findElements(By.tagName("a"));
-        for (WebElement findElement1 : findElements) {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("arguments[0].click();", findElement1);
-            String ep = findElement1.getText();
-            try {
-                Thread.sleep(12000 + r.nextInt(2000));
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Document parse = Jsoup.parse(driver.getPageSource());
-            Elements elementsByTag = parse.getElementsByTag("video");
-            String link = elementsByTag.get(0).attr("src");
-            try {
-                getGoogleDownload(link, title + ep);
-            } catch (IOException ex) {
-                Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
+//    public static void download(String url, String title) {
+//        Random r = new Random();
+//        WebDriver driver = ChromeDriverClient.getChromeDriver();
+//        driver.get(url);
+//        try {
+//            Thread.sleep(12000 + r.nextInt(2000));
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        WebElement findElement = driver.findElement(By.className("les-content"));
+//        List<WebElement> findElements = findElement.findElements(By.tagName("a"));
+//        for (WebElement findElement1 : findElements) {
+//            JavascriptExecutor js = (JavascriptExecutor) driver;
+//            js.executeScript("arguments[0].click();", findElement1);
+//            String ep = findElement1.getText();
+//            try {
+//                Thread.sleep(12000 + r.nextInt(2000));
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            Document parse = Jsoup.parse(driver.getPageSource());
+//            Elements elementsByTag = parse.getElementsByTag("video");
+//            String link = elementsByTag.get(0).attr("src");
+//            try {
+//                getGoogleDownload(link, title + ep);
+//            } catch (IOException ex) {
+//                Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//    }
 
     public static void download(String url, String title, int eps) {
         Random r = new Random();
