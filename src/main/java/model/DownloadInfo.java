@@ -9,15 +9,15 @@ package model;
  *
  * @author Viet Bac
  */
-public class FileUpload {
+public class DownloadInfo {
     public int id;
     public String type;
     public String file;
-    public byte upload;
-    public FileUpload(int id, String type, String file, byte upload) {
+    public int eps;
+    public DownloadInfo(int id, String type, String file, int eps) {
         this.id = id;
         this.type = type;
         this.file = file;
-        this.upload = upload;
+        this.eps = eps;
     }
 }
