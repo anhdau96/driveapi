@@ -25,7 +25,8 @@ import model.Movie;
 public class DBController {
 
     public void insertMovies(String name, String year, String url, String file, String quality) throws ClassNotFoundException, SQLException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILE,QUALITY,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?,?)");
         pt.setString(1, name);
         pt.setString(2, year);
@@ -39,7 +40,8 @@ public class DBController {
     }
 
     public void insertEps(int movieId, int ep, String url, String file) throws ClassNotFoundException, SQLException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILE,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?)");
         pt.setInt(1, movieId);
         pt.setInt(2, ep);
@@ -52,7 +54,8 @@ public class DBController {
     }
 
     public void updateDownload(String file) throws ClassNotFoundException, SQLException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET DOWNLOAD = ? WHERE FILE = ?");
         pt.setInt(1, 1);
         pt.setString(2, file);
@@ -64,7 +67,8 @@ public class DBController {
     }
 
     public void updateUpload(int id, String type) throws ClassNotFoundException, SQLException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         PreparedStatement pt;
         if (type.compareTo("movie") == 0) {
             pt = conn.prepareStatement("UPDATE MOVIES SET UPLOAD = ? WHERE ID = ?");
@@ -80,7 +84,8 @@ public class DBController {
     }
 
     public List<Movie> getAllMovie() throws ClassNotFoundException, SQLException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         Statement stmt = conn.createStatement();
         String sql = "SELECT * FROM MOVIES";
         ResultSet rs = stmt.executeQuery(sql);
@@ -93,7 +98,8 @@ public class DBController {
     }
 
     public List<Episode> getAllEpisodes(int movieId) throws ClassNotFoundException, SQLException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         Statement stmt = conn.createStatement();
         String sql = "SELECT * FROM EPS WHERE MOVIEID = " + movieId;
         ResultSet rs = stmt.executeQuery(sql);
@@ -106,7 +112,8 @@ public class DBController {
     }
 
     public int getMovieId(String name, String year) throws SQLException, ClassNotFoundException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE NAME = ? AND YEAR = ?");
         pst.setString(1, name);
         pst.setString(2, year);
@@ -118,7 +125,8 @@ public class DBController {
     }
 
     public List<DownloadInfo> getNotDownload() throws SQLException, ClassNotFoundException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         Statement stmt = conn.createStatement();
         String sql = "SELECT * FROM MOVIES WHERE QUALITY !='serie' AND DOWNLOAD = 0";
         ResultSet rs = stmt.executeQuery(sql);
@@ -136,7 +144,8 @@ public class DBController {
     }
 
     public FileUpload findFile(String fileName) throws SQLException, ClassNotFoundException {
-        Connection conn = Connect.getConnection();
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ?");
         pst.setString(1, fileName);
         ResultSet rs = pst.executeQuery();

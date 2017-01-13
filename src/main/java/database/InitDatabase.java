@@ -16,8 +16,8 @@ import java.sql.Statement;
 public class InitDatabase {
 
     public static void create() throws SQLException, ClassNotFoundException {
-        Connection conn = Connect.getConnection();
-
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
         Statement stmt = conn.createStatement();
         String drop = "DROP TABLE IF EXISTS MOVIES;"
                 + "DROP TABLE IF EXISTS EPS;"

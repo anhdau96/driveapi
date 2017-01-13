@@ -45,7 +45,7 @@ public class Main {
             try {
                 List<DownloadInfo> notDownload = contr.getNotDownload();
                 for (DownloadInfo downloadInfo : notDownload) {
-                    DownloadUlti.download(downloadInfo.link, downloadInfo.file, downloadInfo.eps);
+                    DownloadUlti.download(downloadInfo.link.concat("watching.html"), downloadInfo.file, downloadInfo.eps);
                 }
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

@@ -40,7 +40,7 @@ public class Crawl extends Thread{
     public void Crawl() throws ClassNotFoundException, SQLException {
         try {
             DBController contr = new DBController();
-            Document get = Jsoup.connect("http://123movies.ru/movies/library").userAgent("Chrome").get();
+            Document get = Jsoup.connect("http://123movies.is/movies/library").userAgent("Chrome").get();
             Element element = get.getElementsByAttributeValueMatching("class", "movies-letter").get(0);
 //            System.out.println(element);
             Elements lstABC = element.getElementsByTag("a");
@@ -137,7 +137,7 @@ public class Crawl extends Thread{
     public boolean existMovies(String title, String year) throws IOException, URISyntaxException {
         JsonReader reader = new JsonReader();
         URI uri = new URIBuilder()
-                .setScheme("http")
+                .setScheme("https")
                 .setHost(ConfigService.getInstance().get("apiURL"))
                 .setPath("/api/auto/movie/" + title + "/" + year)
                 .build();
@@ -149,7 +149,7 @@ public class Crawl extends Thread{
     public boolean existSerie(String title, String year, String season) throws IOException, URISyntaxException {
         JsonReader reader = new JsonReader();
         URI uri = new URIBuilder()
-                .setScheme("http")
+                .setScheme("https")
                 .setHost(ConfigService.getInstance().get("apiURL"))
                 .setPath("/api/auto/movie/" + title + "/" + year + "/" + season)
                 .build();
@@ -161,8 +161,8 @@ public class Crawl extends Thread{
     public boolean existEps(String title, String year, String season,int ep) throws URISyntaxException, IOException {
         JsonReader reader = new JsonReader();
         URI uri = new URIBuilder()
-                .setScheme("http")
-                .setHost("bc614315.ngrok.io")
+                .setScheme("https")
+                .setHost(ConfigService.getInstance().get("apiURL"))
                 .setPath("/api/auto/movie/" + title + "/" + year + "/" + season+"/"+ep)
                 .build();
         HttpGet httpget = new HttpGet(uri);

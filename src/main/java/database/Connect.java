@@ -14,17 +14,15 @@ import java.sql.SQLException;
  * @author Viet Bac
  */
 public class Connect {
-    
-    private static Connection conn = null;
 
-    private Connect() {
-    } 
+    private Connection conn;
 
-    public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        if (conn == null || conn.isClosed()) {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:movies.db");
-        }
+    public Connect() {
+    }
+
+    public Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("org.sqlite.JDBC");
+        conn = DriverManager.getConnection("jdbc:sqlite:movies.db");
         return conn;
     }
 }
