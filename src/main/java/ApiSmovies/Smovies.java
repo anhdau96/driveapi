@@ -22,21 +22,22 @@ public class Smovies {
     private Smovies() {
     }
 
-    public boolean createEpisode(String movieName,String season ,String episode,String googleid) throws URISyntaxException {
+    public boolean createEpisode(String movieName,String season ,String episode,String googleid) throws URISyntaxException, IOException {
         URI uri = new URIBuilder()
                 .setScheme("http")
                 .setHost(ConfigService.getInstance().get("apiURL"))
                 .setPath("/api/auto/upload/episode")
-                .setParameter("movie_name", "passengers")
-                .setParameter("btnG", "Google Search")
-                .setParameter("aq", "f")
-                .setParameter("oq", "")
+                .setParameter("movie_name", movieName)
+                .setParameter("season", season)
+                .setParameter("episode",episode)
+                .setParameter("googleid", googleid)
                 .build();
         HttpGet httpget = new HttpGet(uri);
+        new JsonReader().readJsonFromUrl(httpget.getURI().toString());
         return true;
     }
 
-    public boolean createMovie(String movieName,String year,String googleid) throws URISyntaxException, IOException {
+    public boolean createMovie(String movieName,String year,String googleid,String quality) throws URISyntaxException, IOException {
         URI uri = new URIBuilder()
                 .setScheme("http")
                 .setHost(ConfigService.getInstance().get("apiURL"))
@@ -44,6 +45,7 @@ public class Smovies {
                 .setParameter("movie_name", movieName)
                 .setParameter("year", year)
                 .setParameter("googleid", googleid)
+                .setParameter("quality", quality)
                 .build();
         HttpGet httpget = new HttpGet(uri);
         System.out.println(httpget);
@@ -52,7 +54,7 @@ public class Smovies {
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-        boolean movie = Smovies.getInstance().createMovie("passengers", "2016", "dfsdfdsfds");
+        boolean movie = Smovies.getInstance().createMovie("passengers", "2016", "dfsdfdsfds","HD");
         System.out.println(movie);
     }
 }
