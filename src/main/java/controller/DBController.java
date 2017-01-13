@@ -6,6 +6,8 @@
 package controller;
 
 import database.Connect;
+
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -151,16 +153,18 @@ public class DBController {
         ResultSet rs = pst.executeQuery();
         boolean next = rs.next();
         if (next) {
+            FileUpload f=new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6));
             conn.close();
-            return new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6));
+            return f;
         }
         PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ?");
         pst1.setString(1, fileName);
         ResultSet rs1 = pst1.executeQuery();
         boolean next1 = rs1.next();
         if (next1) {
+            FileUpload f=new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6));
             conn.close();
-            return new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6));
+            return f;
         }
         return null;
     }

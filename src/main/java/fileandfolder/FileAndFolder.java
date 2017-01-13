@@ -8,6 +8,8 @@ package fileandfolder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import Config.ConfigService;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -17,7 +19,7 @@ import org.apache.commons.io.FilenameUtils;
 public class FileAndFolder {
     public static List<String> getAllFille(){
         List<String> lstFileName = new ArrayList<>();
-        File c = new File("C:\\Download");
+        File c = new File(ConfigService.getInstance().get("savePath"));
         File[] listFiles = c.listFiles();
         for (File listFile : listFiles) {
             lstFileName.add(FilenameUtils.removeExtension(listFile.getName()));

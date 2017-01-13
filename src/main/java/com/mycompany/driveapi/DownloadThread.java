@@ -2,6 +2,7 @@ package com.mycompany.driveapi;
 
 import UI.UploadManager;
 import UI.UploadingTableModel;
+import controller.DBController;
 import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class DownloadThread extends Thread {
     public File[] files;
     public UploadingTableModel uploadingTableModel;
     public JTable uploadingTable;
-    public JTextArea jTextArea;
+    public JTextArea uploadingStatus;
     public UploadManager uploadManager;
 
     public DownloadThread(UploadManager uploadManager) {
@@ -30,17 +31,19 @@ public class DownloadThread extends Thread {
         for (int i = 0; i < files.length; i++) {
             System.out.println(files[i].getName());
             try {
-                System.out.println();
-                driveManager.upload(files[i],uploadManager);
+                uploadingStatus.append("created new Thread : Preparing upload file "+files[i].getName());
+                com.google.api.services.drive.model.File upload = driveManager.upload(files[i], uploadManager);
+                uploadingStatus.append("upload "+files[i].getName()+" complete");
+                uploadingStatus.append("writing to db");
+                DBController db=new DBController();
+                uploadingStatus.append("calling smovies api ");
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            uploadingTableModel.addRow(new String[]{
-                    "" + i, files[i].getName(), progress
-            });
         }
-        uploadingTable.setModel(uploadingTableModel);
-        uploadingTable.getColumnModel().getColumn(0).setMaxWidth(50);
+
 //        jTextArea.append(progress);
     }
 }

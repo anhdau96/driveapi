@@ -47,5 +47,10 @@
             <artifactId>json</artifactId>
             <version>20160810</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.ullink.slack</groupId>
+            <artifactId>simpleslackapi</artifactId>
+        </dependency>
     </dependencies>
 </project>

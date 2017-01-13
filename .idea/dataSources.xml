@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/movies.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="movies.db [2]" uuid="bedc97f2-3666-413b-9d0f-ed11aa2a7639">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/movies.db</jdbc-url>
+    </data-source>
   </component>
 </project>
