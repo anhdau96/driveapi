@@ -20,4 +20,10 @@ public class DownloadInfo {
         this.file = file;
         this.eps = eps;
     }
+
+    @Override
+    public String toString() {
+        return "DownloadInfo{" + "id=" + id + ", link=" + link + ", file=" + file + ", eps=" + eps + '}';
+    }
+    
 }

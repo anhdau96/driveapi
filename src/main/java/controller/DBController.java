@@ -6,8 +6,6 @@
 package controller;
 
 import database.Connect;
-
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,59 +27,67 @@ public class DBController {
     public void insertMovies(String name, String year, String url, String file, String quality) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILE,QUALITY,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?,?)");
-        pt.setString(1, name);
-        pt.setString(2, year);
-        pt.setString(3, url);
-        pt.setString(4, file);
-        pt.setString(5, quality);
-        pt.setInt(6, 0);
-        pt.setInt(7, 0);
-        pt.execute();
+        PreparedStatement check = conn.prepareStatement("SELECT * FROM MOVIES WHERE NAME = ? AND YEAR = ?");
+        check.setString(1, name);
+        check.setString(2, year);
+        ResultSet executeQuery = check.executeQuery();
+        boolean next = executeQuery.next();
+        if (!next) {
+            PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILE,QUALITY,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?,?)");
+            pt.setString(1, name);
+            pt.setString(2, year);
+            pt.setString(3, url);
+            pt.setString(4, file);
+            pt.setString(5, quality);
+            pt.setInt(6, 0);
+            pt.setInt(7, 0);
+            pt.execute();
+        }
         conn.close();
     }
 
     public void insertEps(int movieId, int ep, String url, String file) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILE,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?)");
-        pt.setInt(1, movieId);
-        pt.setInt(2, ep);
-        pt.setString(3, url);
-        pt.setString(4, file);
-        pt.setInt(5, 0);
-        pt.setInt(6, 0);
-        pt.execute();
+        PreparedStatement check = conn.prepareStatement("SELECT * FROM EPS WHERE MOVIEID = ? AND EP = ?");
+        check.setInt(1, movieId);
+        check.setInt(2, ep);
+        ResultSet executeQuery = check.executeQuery();
+        boolean next = executeQuery.next();
+        if (!next) {
+            PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILE,UPLOAD,DOWNLOAD) VALUES (?,?,?,?,?,?)");
+            pt.setInt(1, movieId);
+            pt.setInt(2, ep);
+            pt.setString(3, url);
+            pt.setString(4, file);
+            pt.setInt(5, 0);
+            pt.setInt(6, 0);
+            pt.execute();
+        }
         conn.close();
     }
 
     public void updateDownload(String file) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET DOWNLOAD = ? WHERE FILE = ?");
-        pt.setInt(1, 1);
-        pt.setString(2, file);
-        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET DOWNLOAD = ? WHERE ID = ?");
-        pt1.setInt(1, 1);
-        pt1.setString(2, file);
+        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET DOWNLOAD = 1 WHERE FILE = ?");
+        pt.setString(1, file);
+        pt.execute();
+        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET DOWNLOAD = 1 WHERE FILE = ?");
+        pt1.setString(1, file);
         pt1.execute();
         conn.close();
     }
 
-    public void updateUpload(int id, String type) throws ClassNotFoundException, SQLException {
+    public void updateUpload(String file) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt;
-        if (type.compareTo("movie") == 0) {
-            pt = conn.prepareStatement("UPDATE MOVIES SET UPLOAD = ? WHERE ID = ?");
-            pt.setInt(1, 1);
-            pt.setInt(2, id);
-        } else {
-            pt = conn.prepareStatement("UPDATE EPS SET UPLOAD = ? WHERE ID = ?");
-            pt.setInt(1, 1);
-            pt.setInt(2, id);
-        }
+        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET UPLOAD = 1 WHERE FILE = ?");
+        pt.setString(1, file);
         pt.execute();
+        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET UPLOAD = 1 WHERE FILE = ?");
+        pt1.setString(1, file);
+        pt1.execute();
         conn.close();
     }
 
@@ -120,8 +126,13 @@ public class DBController {
         pst.setString(1, name);
         pst.setString(2, year);
         ResultSet rs = pst.executeQuery();
-        rs.next();
-        int id = rs.getInt(1);
+        boolean next = rs.next();
+        int id;
+        if (next) {
+            id = rs.getInt(1);
+        } else {
+            id = 0;
+        }
         conn.close();
         return id;
     }
@@ -139,7 +150,7 @@ public class DBController {
         String sql1 = "SELECT * FROM EPS WHERE DOWNLOAD = 0";
         ResultSet rs1 = stmt.executeQuery(sql1);
         while (rs1.next()) {
-            lstFile.add(new DownloadInfo(rs1.getInt(1), rs.getString(4), rs.getString(5), rs.getByte(6)));
+            lstFile.add(new DownloadInfo(rs1.getInt(1), rs.getString(4), rs.getString(5), rs.getByte(3)));
         }
         conn.close();
         return lstFile;
@@ -153,18 +164,16 @@ public class DBController {
         ResultSet rs = pst.executeQuery();
         boolean next = rs.next();
         if (next) {
-            FileUpload f=new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6));
             conn.close();
-            return f;
+            return new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6));
         }
         PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ?");
         pst1.setString(1, fileName);
         ResultSet rs1 = pst1.executeQuery();
         boolean next1 = rs1.next();
         if (next1) {
-            FileUpload f=new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6));
             conn.close();
-            return f;
+            return new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6));
         }
         return null;
     }

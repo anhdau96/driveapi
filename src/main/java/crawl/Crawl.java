@@ -24,7 +24,7 @@ import org.jsoup.select.Elements;
  *
  * @author Viet Bac
  */
-public class Crawl extends Thread{
+public class Crawl extends Thread {
 
     @Override
     public void run() {
@@ -62,43 +62,44 @@ public class Crawl extends Thread{
                         Elements lstMlNew = get2.getElementsByClass("mlnew");
                         for (Element element2 : lstMlNew) {
                             String link = element2.getElementsByTag("td").get(1).getElementsByTag("a").get(0).attr("href");
-                            String name = element2.getElementsByTag("td").get(1).getElementsByTag("a").get(0).attr("title");
-                            String year = element2.getElementsByTag("td").get(3).html();
+                            String name = element2.getElementsByTag("td").get(1).getElementsByTag("a").get(0).attr("title").trim();
+                            String year = element2.getElementsByTag("td").get(3).html().trim();
                             String status = element2.getElementsByTag("td").get(4).html().trim();
                             String movieOrSerie = movieOrSerie(status);
                             if (movieOrSerie.equals("movie")) {
                                 boolean existMovies = existMovies(name, year);
                                 if (!existMovies) {
-                                    System.out.println("Phim chua co");
                                     cUI.appendText(name + " chua co" + "\n");
-                                    contr.insertMovies(name, year, link, System.currentTimeMillis()+"", status);
+                                    contr.insertMovies(name, year, link, System.currentTimeMillis() + "", status);
                                 } else {
-                                    System.out.println(name + " da co");
                                     cUI.appendText(name + " da co" + "\n");
                                 }
                             } else {
-                                String title = name.substring(0, name.lastIndexOf(" - Season"));
-                                String season = name.substring(name.lastIndexOf(" - Season") + " - Season ".length(), name.length());
-                                if (!existSerie(title, year, season)) {
-                                    System.out.println(name + "chua co");
-                                    System.out.println(getQuanEp(status));
-                                    cUI.appendText(name + " chua co - So tap: " + getQuanEp(status) + "\n");
-                                    contr.insertMovies(name, year, link, System.currentTimeMillis()+"", "serie");
+                                String title;
+                                String season;
+                                if (name.lastIndexOf(" - Season") != -1) {
+                                    title = name.substring(0, name.lastIndexOf(" - Season"));
+                                    season = name.substring(name.lastIndexOf(" - Season") + " - Season ".length(), name.length());
                                 } else {
-                                    System.out.println(name + "da co" + "\n");
-                                    System.out.println(getQuanEp(status));
+                                    title = name;
+                                    season = "1";
+                                }
+                                
+                                
+                                if (!existSerie(title, year, season)) {
+                                    cUI.appendText(name + " chua co - So tap: " + getQuanEp(status) + "\n");
+                                } else {
                                     cUI.appendText(name + " da co - So tap: " + getQuanEp(status) + "\n");
                                 }
+                                contr.insertMovies(name, year, link, System.currentTimeMillis() + "", "serie");
                                 int quanEp = getQuanEp(status);
                                 int seriId = contr.getMovieId(name, year);
                                 for (int h = 1; h < quanEp; h++) {
                                     if (!existEps(title, year, season, h)) {
-                                        System.out.println("Tap "+h+" chua co\n");
-                                        cUI.appendText("Tap "+h+" chua co\n");
-                                        contr.insertEps(seriId, h, link, System.currentTimeMillis()+"");
+                                        cUI.appendText("Tap " + h + " chua co\n");
+                                        contr.insertEps(seriId, h, link, System.currentTimeMillis() + "");
                                     } else {
-                                        System.out.println("Tap "+h+" da co\n");
-                                        cUI.appendText("Tap "+h+" da co\n");
+                                        cUI.appendText("Tap " + h + " da co\n");
                                     }
                                 }
                             }
@@ -158,15 +159,15 @@ public class Crawl extends Thread{
         return (json.length() != 0);
     }
 
-    public boolean existEps(String title, String year, String season,int ep) throws URISyntaxException, IOException {
+    public boolean existEps(String title, String year, String season, int ep) throws URISyntaxException, IOException {
         JsonReader reader = new JsonReader();
         URI uri = new URIBuilder()
                 .setScheme("https")
                 .setHost(ConfigService.getInstance().get("apiURL"))
-                .setPath("/api/auto/movie/" + title + "/" + year + "/" + season+"/"+ep)
+                .setPath("/api/auto/movie/" + title + "/" + year + "/" + season + "/" + ep)
                 .build();
         HttpGet httpget = new HttpGet(uri);
         String json = reader.readJsonFromUrl(httpget.getURI().toString());
-        return  json.equals("1"); 
+        return json.equals("1");
     }
 }

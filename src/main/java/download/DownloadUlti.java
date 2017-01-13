@@ -72,31 +72,41 @@ public class DownloadUlti {
 //            }
 //        }
 //    }
-
     public static void download(String url, String title, int eps) {
         Random r = new Random();
         WebDriver driver = ChromeDriverClient.getChromeDriver();
         driver.get(url);
+        do {
+            try {
+                WebElement findElement = driver.findElement(By.className("les-content"));
+                List<WebElement> findElements = findElement.findElements(By.tagName("a"));
+                WebElement findElement1 = findElements.get(eps - 1);
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("arguments[0].click();", findElement1);
+                break;
+            } catch (Exception ex) {
+            }
+        } while (true);
+//        try {
+//            Thread.sleep(12000 + r.nextInt(2000));
+//        } catch (InterruptedException ex) {
+//            Thread.currentThread().interrupt();
+//            Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        Elements elementsByTag = null;
+        String link = null;
+        do {
+            try {
+                Document parse = Jsoup.parse(driver.getPageSource());
+                elementsByTag = parse.getElementsByTag("video");
+                link = elementsByTag.get(0).attr("src");
+            } catch (Exception ex) {
+            }
+        } while (link == null || link.equals(""));
+        System.out.println(elementsByTag.get(0).toString());
+        System.out.println(link);
         try {
-            Thread.sleep(12000 + r.nextInt(2000));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        WebElement findElement = driver.findElement(By.className("les-content"));
-        List<WebElement> findElements = findElement.findElements(By.tagName("a"));
-        WebElement findElement1 = findElements.get(eps - 1);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].click();", findElement1);
-        try {
-            Thread.sleep(12000 + r.nextInt(2000));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Document parse = Jsoup.parse(driver.getPageSource());
-        Elements elementsByTag = parse.getElementsByTag("video");
-        String link = elementsByTag.get(0).attr("src");
-        try {
-            getGoogleDownload(link,title);
+            getGoogleDownload(link, title);
         } catch (IOException ex) {
             Logger.getLogger(DownloadUlti.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -107,6 +117,6 @@ public class DownloadUlti {
         Runtime rt = Runtime.getRuntime();
         fileName = fileName.replaceAll(" ", "");
         link = redirect(link);
-        rt.exec("C:\\Program Files (x86)\\Internet Download Manager\\idman.exe /n /d " + link + " /p "+ConfigService.getInstance().get("savePath")+" /f " + fileName + ".mp4");
+        rt.exec("C:\\Program Files (x86)\\Internet Download Manager\\idman.exe /n /d " + link + " /p " + ConfigService.getInstance().get("savePath") + " /f " + fileName + ".mp4");
     }
 }

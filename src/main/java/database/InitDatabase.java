@@ -30,7 +30,8 @@ public class InitDatabase {
                 + " FILE           VARCHAR(150)    NOT NULL, "
                 + " QUALITY        VARCHAR(6)      NULL    , "
                 + " UPLOAD         BIT                     , "
-                + " DOWNLOAD       BIT                       );";
+                + " DOWNLOAD       BIT                     , "
+                + " GGID           VARCHAR(150)    NULL );";
         String sql1 = "CREATE TABLE EPS "
                 + "(ID INTEGER PRIMARY KEY             AUTOINCREMENT,"
                 + " MOVIEID        INT             NOT NULL, "
@@ -38,7 +39,8 @@ public class InitDatabase {
                 + " URL            VARCHAR(200)    NOT NULL, "
                 + " FILE           VARCHAR(150)    NOT NULL, "
                 + " UPLOAD         BIT                     , "
-                + " DOWNLOAD       BIT                     );";
+                + " DOWNLOAD       BIT                     , "
+                + " GGID           VARCHAR(150)    NULL );";
         String sql2 = "CREATE TABLE LOG "
                 + "(ID INTEGER PRIMARY KEY     AUTOINCREMENT,"
                 + " ERROR          TEXT    NOT NULL );";

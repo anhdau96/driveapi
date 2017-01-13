@@ -48,9 +48,9 @@
             <version>20160810</version>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>com.ullink.slack</groupId>
             <artifactId>simpleslackapi</artifactId>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>
