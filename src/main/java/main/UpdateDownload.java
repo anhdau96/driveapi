@@ -20,7 +20,7 @@ public class UpdateDownload extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (!interrupted()) {
             try {
                 sleep(300000);
             } catch (InterruptedException ex) {

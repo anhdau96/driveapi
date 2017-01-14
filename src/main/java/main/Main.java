@@ -26,12 +26,14 @@ public class Main {
         return (freeSpace / 1024 / 1024 / 1024) >= 6;
     }
 
-    public static void main(String[] args) {
-//        try {
-//            InitDatabase.create();
-//        } catch (SQLException | ClassNotFoundException ex) {
-//            Logger.getLogger(Crawl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    public static void runThread(boolean init) {
+        if (init) {
+            try {
+                InitDatabase.create();
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Crawl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         Crawl c = new Crawl();
         c.cUI = new CrawlUI();
         c.start();
@@ -41,7 +43,7 @@ public class Main {
         download.start();
         while (true) {
             System.out.println(checkStorage());
-            System.out.println("suspended: "+download.isSuspended());
+            System.out.println("suspended: " + download.isSuspended());
             if (!checkStorage() && !download.isSuspended()) {
                 download.suspendThread();
                 System.out.println("Interupt");

@@ -18,7 +18,8 @@ public class Episode {
     public String file;
     public byte download;
     public byte upload;
-
+    public String ggId;
+    
     public Episode(int id, int movieId, int ep, String url, String file, byte download, byte upload) {
         this.id = id;
         this.movieId = movieId;
@@ -28,4 +29,16 @@ public class Episode {
         this.download = download;
         this.upload = upload;
     }
+
+    public Episode(int id, int movieId, int ep, String url, String file, byte download, byte upload, String ggId) {
+        this.id = id;
+        this.movieId = movieId;
+        this.ep = ep;
+        this.url = url;
+        this.file = file;
+        this.download = download;
+        this.upload = upload;
+        this.ggId = ggId;
+    }
+    
 }

@@ -79,13 +79,13 @@ public class DBController {
         conn.close();
     }
 
-    public void updateUpload(String file) throws ClassNotFoundException, SQLException {
+    public void updateUpload(String file, String ggId) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET UPLOAD = 1 WHERE FILE = ?");
+        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET UPLOAD = 1, GGID =? WHERE FILE = ?");
         pt.setString(1, file);
         pt.execute();
-        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET UPLOAD = 1 WHERE FILE = ?");
+        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET UPLOAD = 1, GGID =? WHERE FILE = ?");
         pt1.setString(1, file);
         pt1.execute();
         conn.close();
@@ -167,7 +167,7 @@ public class DBController {
             conn.close();
             return new FileUpload(rs.getInt(1), "movie", rs.getString(4), rs.getByte(6));
         }
-        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ?");
+        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILE = ?");
         pst1.setString(1, fileName);
         ResultSet rs1 = pst1.executeQuery();
         boolean next1 = rs1.next();
@@ -176,5 +176,33 @@ public class DBController {
             return new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6));
         }
         return null;
+    }
+    
+    public Movie checkAddMovie(String fileName){
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
+        pst.setString(1, fileName);
+        ResultSet rs = pst.executeQuery();
+        boolean next = rs.next();
+        if (next) {
+            conn.close();
+            return new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getByte(7), rs.getByte(8), rs.getString(9));
+        }
+        return null;
+    }
+    
+    public Episode checkAddEps(String fileName){
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
+        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
+        pst1.setString(1, fileName);
+        ResultSet rs = pst1.executeQuery();
+        boolean next = rs.next();
+        if (next) {
+            conn.close();
+            return new Episode(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getByte(6)), rs.getByte(7), rs.getString(8));
+        }
+        return false;
     }
 }
