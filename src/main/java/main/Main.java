@@ -17,8 +17,13 @@ import java.util.logging.Logger;
  *
  * @author Viet Bac
  */
-public class Main {
-
+public class Main extends Thread{
+    public boolean init;
+    @Override
+    public void run() {
+        runThread(); 
+    }
+    
     public static boolean checkStorage() {
         File file = new File("C:");
         long freeSpace = file.getFreeSpace();
@@ -26,7 +31,7 @@ public class Main {
         return (freeSpace / 1024 / 1024 / 1024) >= 6;
     }
 
-    public static void runThread(boolean init) {
+    public void runThread() {
         if (init) {
             try {
                 InitDatabase.create();
