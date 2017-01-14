@@ -178,7 +178,7 @@ public class DBController {
         return null;
     }
     
-    public Movie checkAddMovie(String fileName){
+    public Movie checkAddMovie(String fileName) throws ClassNotFoundException, SQLException{
         Connect c = new Connect();
         Connection conn = c.getConnection();
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
@@ -192,7 +192,7 @@ public class DBController {
         return null;
     }
     
-    public Episode checkAddEps(String fileName){
+    public Episode checkAddEps(String fileName) throws ClassNotFoundException, SQLException{
         Connect c = new Connect();
         Connection conn = c.getConnection();
         PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
@@ -201,8 +201,8 @@ public class DBController {
         boolean next = rs.next();
         if (next) {
             conn.close();
-            return new Episode(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getByte(6)), rs.getByte(7), rs.getString(8));
+            return new Episode(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getByte(6), rs.getByte(7), rs.getString(8));
         }
-        return false;
+        return null;
     }
 }

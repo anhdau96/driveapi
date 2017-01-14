@@ -6,10 +6,13 @@
 package main;
 
 import ApiSmovies.Smovies;
+import Config.ConfigService;
 import controller.DBController;
 import fileandfolder.FileAndFolder;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,10 +30,17 @@ public class AddMovie extends Thread{
         while(!interrupted()){
             List<String> allFille = FileAndFolder.getAllFille();
             for (String string : allFille) {
-                Movie checkAddMovie = contr.checkAddMovie(string);
+                Movie checkAddMovie = null;
+                try {
+                    checkAddMovie = contr.checkAddMovie(string);
+                } catch (ClassNotFoundException | SQLException ex) {
+                    Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 if (checkAddMovie !=null){
                     try {
                         Smovies.getInstance().createMovie(checkAddMovie.name, checkAddMovie.year, checkAddMovie.ggId, checkAddMovie.quality);
+                        File f = new File(ConfigService.getInstance().get("savePath"+"\\"+string+".mp4"));
+                        f.delete();
                     } catch (URISyntaxException | IOException ex) {
                         Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
                     }
