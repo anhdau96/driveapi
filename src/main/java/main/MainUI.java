@@ -91,8 +91,15 @@ public class MainUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (jRadioButton1.isSelected()) Main.runThread(true);
-        else Main.runThread(false);
+        Main m = new Main();
+        if (jRadioButton1.isSelected()) {
+            m.init = true;
+            m.start();
+        } else {
+            m.init = false;
+            m.start();
+        }
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

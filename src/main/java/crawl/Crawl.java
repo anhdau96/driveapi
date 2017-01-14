@@ -69,9 +69,11 @@ public class Crawl extends Thread {
                             if (movieOrSerie.equals("movie")) {
                                 boolean existMovies = existMovies(name, year);
                                 if (!existMovies) {
+                                    System.out.println(name + " chua co" + "\n");
                                     cUI.appendText(name + " chua co" + "\n");
                                     contr.insertMovies(name, year, link, System.currentTimeMillis() + "", status);
                                 } else {
+                                    System.out.println(name + " da co" + "\n");
                                     cUI.appendText(name + " da co" + "\n");
                                 }
                             } else {
@@ -84,8 +86,6 @@ public class Crawl extends Thread {
                                     title = name;
                                     season = "1";
                                 }
-                                
-                                
                                 if (!existSerie(title, year, season)) {
                                     cUI.appendText(name + " chua co - So tap: " + getQuanEp(status) + "\n");
                                 } else {
