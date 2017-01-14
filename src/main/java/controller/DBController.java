@@ -177,8 +177,8 @@ public class DBController {
         }
         return null;
     }
-    
-    public Movie checkAddMovie(String fileName) throws ClassNotFoundException, SQLException{
+
+    public Movie checkAddMovie(String fileName) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
@@ -191,8 +191,8 @@ public class DBController {
         }
         return null;
     }
-    
-    public Episode checkAddEps(String fileName) throws ClassNotFoundException, SQLException{
+
+    public Episode checkAddEps(String fileName) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
         PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
@@ -204,5 +204,18 @@ public class DBController {
             return new Episode(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getByte(6), rs.getByte(7), rs.getString(8));
         }
         return null;
+    }
+
+    public Movie getMovieSeri(int movieId) throws ClassNotFoundException, SQLException {
+        Connect c = new Connect();
+        Connection conn = c.getConnection();
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE ID = ?");
+        pst.setInt(1, movieId);
+        ResultSet rs = pst.executeQuery();
+        Movie m = null;
+        rs.next();
+        m = new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getByte(7), rs.getByte(8));
+        conn.close();
+        return m;
     }
 }

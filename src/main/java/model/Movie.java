@@ -19,6 +19,7 @@ public class Movie {
     public byte download;
     public byte upload;
     public String ggId;
+    public String season;
 
     public Movie(int id, String name, String year, String url, String file, String quality, byte download, byte upload) {
         this.id = id;

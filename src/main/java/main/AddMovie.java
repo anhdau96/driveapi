@@ -16,18 +16,19 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Episode;
 import model.Movie;
 
 /**
  *
  * @author Administrator
  */
-public class AddMovie extends Thread{
+public class AddMovie extends Thread {
 
     @Override
     public void run() {
         DBController contr = new DBController();
-        while(!interrupted()){
+        while (!interrupted()) {
             List<String> allFille = FileAndFolder.getAllFille();
             for (String string : allFille) {
                 Movie checkAddMovie = null;
@@ -36,17 +37,35 @@ public class AddMovie extends Thread{
                 } catch (ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if (checkAddMovie !=null){
+                if (checkAddMovie != null) {
                     try {
-                        Smovies.getInstance().createMovie(checkAddMovie.name, checkAddMovie.year, checkAddMovie.ggId, checkAddMovie.quality);
-                        File f = new File(ConfigService.getInstance().get("savePath"+"\\"+string+".mp4"));
-                        f.delete();
+                        String createMovie = Smovies.getInstance().createMovie(checkAddMovie.name, checkAddMovie.year, checkAddMovie.ggId, checkAddMovie.quality);
+                        if (Integer.parseInt(createMovie) == 1) {
+                            File f = new File(ConfigService.getInstance().get("savePath" + "\\" + string + ".mp4"));
+                            f.delete();
+                        }
                     } catch (URISyntaxException | IOException ex) {
                         Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+//                Episode checkAddEps = null;
+//                try {
+//                    checkAddEps = contr.checkAddEps(string);
+//                } catch (ClassNotFoundException | SQLException ex) {
+//                    Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                if (checkAddEps != null) {
+//                    try {
+//                        Movie movieSeri = contr.getMovieSeri(checkAddEps.movieId);
+//                        Smovies.getInstance().createEpisode(movieSeri.name, movieSeri., string, string);
+//                    } catch (ClassNotFoundException ex) {
+//                        Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
+//                    } catch (SQLException ex) {
+//                        Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                    
+//                }
             }
         }
     }
-    
 }

@@ -108,7 +108,7 @@ public class UploadManager {
         uploadingTable.getColumnModel().getColumn(0).setMaxWidth(50);
     }
 
-    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
+    public static void startThread() throws IOException, SQLException, ClassNotFoundException {
         JFrame frame = new JFrame("UploadManager");
         frame.setContentPane(new UploadManager().container);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
