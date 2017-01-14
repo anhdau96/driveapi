@@ -1,6 +1,7 @@
 package com.mycompany.driveapi;
 
         import Config.ConfigService;
+        import UI.UploadFile;
         import UI.UploadManager;
         import com.google.api.client.googleapis.media.MediaHttpUploader;
         import com.google.api.client.http.FileContent;
@@ -9,6 +10,7 @@ package com.mycompany.driveapi;
         import com.google.api.services.drive.model.File;
         import com.google.api.services.drive.model.Permission;
 
+        import javax.swing.*;
         import java.io.IOException;
         import java.nio.file.Files;
         import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class DriveManager {
 //        return uploadedFile;
 //    }
 
-    public File upload(java.io.File file, UploadManager uploadManager) throws IOException {
+    public File upload(java.io.File file, UploadFile uploadManager) throws IOException {
         //setup
         File driveFile = new File();
 
@@ -109,9 +111,9 @@ public class DriveManager {
         for (java.io.File f:files) {
             System.out.println(f.getName());
         }
-//        DriveManager d = new DriveManager();
-//        java.io.File f=new java.io.File("C:\\Users\\super\\Desktop\\SampleVideo_1280x720_1mb.mp4");
-//        d.upload(f);
+        DriveManager d = new DriveManager();
+        java.io.File f=new java.io.File("C:\\Users\\super\\Desktop\\SampleVideo_1280x720_1mb.mp4");
+        d.upload(f,new UploadFile(f));
 //        System.out.println(d.getStorageInfo().getUsageInDrive()/1024/1024+"mb");
 //        System.out.println(d.getStorageInfo().getLimit()/1024/1024+"mb");
 

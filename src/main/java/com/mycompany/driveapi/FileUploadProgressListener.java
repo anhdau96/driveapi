@@ -1,9 +1,11 @@
 package com.mycompany.driveapi;
 
+import UI.UploadFile;
 import UI.UploadManager;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.text.NumberFormat;
 
@@ -13,8 +15,8 @@ import java.text.NumberFormat;
 public class FileUploadProgressListener implements MediaHttpUploaderProgressListener {
 
     private String progress = "";
-    private UploadManager uploadManager;
-    public FileUploadProgressListener(UploadManager uploadManager) {
+    private UploadFile uploadManager;
+    public FileUploadProgressListener(UploadFile uploadManager) {
     this.uploadManager=uploadManager;
     }
 

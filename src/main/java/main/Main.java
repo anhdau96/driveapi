@@ -9,9 +9,12 @@ import UI.UploadManager;
 import crawl.Crawl;
 import crawl.CrawlUI;
 import database.InitDatabase;
+import fileandfolder.FileAndFolder;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,12 +46,17 @@ public class Main {
         updateDown.start();
         Download download = new Download();
         download.start();
-        try {
-            UploadManager.startThread();
-        } catch (IOException | SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
         while (true) {
+            List<String> allFille = FileAndFolder.getAllFille();
+            if (allFille.size()>0 && UploadManager.flag == false) {
+                try {
+                    UploadManager.flag = true;
+                    UploadManager.startThread();
+                } catch (IOException | SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            }
             System.out.println(checkStorage());
             System.out.println("suspended: " + download.isSuspended());
             if (!checkStorage() && !download.isSuspended()) {
@@ -65,6 +73,7 @@ public class Main {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
     }
 }

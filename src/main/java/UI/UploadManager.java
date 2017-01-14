@@ -1,7 +1,6 @@
 package UI;
 
 import Config.ConfigService;
-import com.mycompany.driveapi.DownloadThread;
 import com.mycompany.driveapi.DriveManager;
 import controller.DBController;
 import model.FileUpload;
@@ -32,7 +31,7 @@ public class UploadManager {
     public static String progress="";
     private DBController dbController;
     DriveManager driveManager;
-
+    public static boolean flag;
     public static String getProgress() {
         return progress;
     }
@@ -46,7 +45,7 @@ public class UploadManager {
         dbController=new DBController();
         driveManager=new DriveManager();
         setUploadingTable();
-        startUpload();
+//        startUpload();
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,16 +55,16 @@ public class UploadManager {
 
     }
 
-    private void startUpload(){
-        tabbedPane1.setSelectedIndex(1);
-        DownloadThread downloadThread = new DownloadThread(getUploadManager());
-        downloadThread.driveManager = driveManager;
-        downloadThread.files = files;
-        downloadThread.uploadingTable = uploadingTable;
-        downloadThread.uploadingTableModel = uploadingTableModel;
-        downloadThread.uploadingStatus=uploadingStatus;
-        downloadThread.start();
-    }
+//    private void startUpload(){
+//        tabbedPane1.setSelectedIndex(1);
+//        DownloadThread downloadThread = new DownloadThread(getUploadManager());
+//        downloadThread.driveManager = driveManager;
+//        downloadThread.files = files;
+//        downloadThread.uploadingTable = uploadingTable;
+//        downloadThread.uploadingTableModel = uploadingTableModel;
+//        downloadThread.uploadingStatus=uploadingStatus;
+//        downloadThread.start();
+//    }
 
 
     public static void changProgess(String progress){
