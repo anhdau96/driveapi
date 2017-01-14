@@ -93,6 +93,7 @@ public class MainUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (jRadioButton1.isSelected()) Main.runThread(true);
         else Main.runThread(false);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

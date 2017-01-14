@@ -5,12 +5,10 @@
  */
 package main;
 
-import UI.UploadManager;
 import crawl.Crawl;
 import crawl.CrawlUI;
 import database.InitDatabase;
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,11 +41,7 @@ public class Main {
         updateDown.start();
         Download download = new Download();
         download.start();
-        try {
-            UploadManager.startThread();
-        } catch (IOException | SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         while (true) {
             System.out.println(checkStorage());
             System.out.println("suspended: " + download.isSuspended());
