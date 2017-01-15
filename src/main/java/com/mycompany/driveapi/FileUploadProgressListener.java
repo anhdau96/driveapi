@@ -24,13 +24,11 @@ public class FileUploadProgressListener implements MediaHttpUploaderProgressList
         switch (mediaHttpUploader.getUploadState()) {
             case INITIATION_STARTED:
                 uploadManager.updateStatus("Upload Initiation has started.\n");
-                System.out.println("start");
                 break;
             case INITIATION_COMPLETE:
                 uploadManager.updateStatus("Upload Initiation is Complete.\n");
                 break;
             case MEDIA_IN_PROGRESS:
-                System.out.println("50%");
                 uploadManager.updateStatus("Upload is In Progress: "
                         + NumberFormat.getPercentInstance().format(mediaHttpUploader.getProgress())+ "\n");
                 break;

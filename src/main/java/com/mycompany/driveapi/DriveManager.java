@@ -9,6 +9,7 @@ package com.mycompany.driveapi;
         import com.google.api.services.drive.model.About;
         import com.google.api.services.drive.model.File;
         import com.google.api.services.drive.model.Permission;
+import crawl.CrawlUI;
 
         import javax.swing.*;
         import java.io.IOException;
@@ -65,7 +66,7 @@ public class DriveManager {
 //        return uploadedFile;
 //    }
 
-    public File upload(java.io.File file, UploadFile uploadManager) throws IOException {
+    public File upload(java.io.File file, CrawlUI uploadManager) throws IOException {
         //setup
         File driveFile = new File();
 
@@ -104,18 +105,18 @@ public class DriveManager {
 
 
 
-    public static void main(String[] args) throws IOException {
-        java.io.File saveFolder=new java.io.File(ConfigService.getInstance().get("savePath"));
-        System.out.println(ConfigService.getInstance().get("savePath"));
-        java.io.File[] files = saveFolder.listFiles();
-        for (java.io.File f:files) {
-            System.out.println(f.getName());
-        }
-        DriveManager d = new DriveManager();
-        java.io.File f=new java.io.File("C:\\Users\\super\\Desktop\\SampleVideo_1280x720_1mb.mp4");
-        d.upload(f,new UploadFile(f));
-//        System.out.println(d.getStorageInfo().getUsageInDrive()/1024/1024+"mb");
-//        System.out.println(d.getStorageInfo().getLimit()/1024/1024+"mb");
-
-    }
+//    public static void main(String[] args) throws IOException {
+//        java.io.File saveFolder=new java.io.File(ConfigService.getInstance().get("savePath"));
+//        System.out.println(ConfigService.getInstance().get("savePath"));
+//        java.io.File[] files = saveFolder.listFiles();
+//        for (java.io.File f:files) {
+//            System.out.println(f.getName());
+//        }
+//        DriveManager d = new DriveManager();
+//        java.io.File f=new java.io.File("C:\\Users\\super\\Desktop\\SampleVideo_1280x720_1mb.mp4");
+//        d.upload(f,new UploadFile(f));
+////        System.out.println(d.getStorageInfo().getUsageInDrive()/1024/1024+"mb");
+////        System.out.println(d.getStorageInfo().getLimit()/1024/1024+"mb");
+//
+//    }
 }

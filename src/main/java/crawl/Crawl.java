@@ -70,7 +70,7 @@ public class Crawl extends Thread {
                                 boolean existMovies = existMovies(name, year);
                                 if (!existMovies) {
                                     cUI.appendText(name + " chua co" + "\n");
-                                    contr.insertMovies(name, year, link, System.currentTimeMillis() + "", status,0);
+                                    contr.insertMovies(name, year, link, System.currentTimeMillis() + "", status,1);
                                 } else {
                                     cUI.appendText(name + " da co" + "\n");
                                 }

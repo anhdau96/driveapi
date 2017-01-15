@@ -8,6 +8,8 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,8 +23,9 @@ public class Connect {
     }
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.sqlite.JDBC");
-        conn = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String connectionURL = "jdbc:sqlserver://heymanga.database.windows.net;databaseName=smoviesauto";
+        conn = DriverManager.getConnection(connectionURL, "heymanga ", "abc1231!");
         return conn;
     }
 }

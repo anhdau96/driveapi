@@ -23,29 +23,29 @@ public class InitDatabase {
                 + "DROP TABLE IF EXISTS EPS;"
                 + "DROP TABLE IF EXISTS LOG;";
         String sql = "CREATE TABLE MOVIES "
-                + "(ID INTEGER PRIMARY KEY             AUTOINCREMENT, "
+                + "(ID INT PRIMARY KEY             IDENTITY(1,1), "
                 + " NAME           VARCHAR(150)    NOT NULL, "
                 + " YEAR           VARCHAR(5)      NOT NULL, "
                 + " URL            VARCHAR(200)    NOT NULL, "
-                + " FILE           VARCHAR(150)    NOT NULL, "
+                + " FILENAME           VARCHAR(150)    NOT NULL, "
                 + " QUALITY        VARCHAR(6)      NULL    , "
                 + " UPLOAD         BIT                     , "
                 + " DOWNLOAD       BIT                     , "
                 + " GGID           VARCHAR(150)    NULL,     "
                 + " SEASON         INT                     , "
-                + " ADD       INT                      );";
+                + " ADDSTATUS       INT                      );";
         String sql1 = "CREATE TABLE EPS "
-                + "(ID INTEGER PRIMARY KEY             AUTOINCREMENT,"
+                + "(ID INT PRIMARY KEY             IDENTITY(1,1),"
                 + " MOVIEID        INT             NOT NULL, "
                 + " EP             INT             NOT NULL, "
                 + " URL            VARCHAR(200)    NOT NULL, "
-                + " FILE           VARCHAR(150)    NOT NULL, "
+                + " FILENAME           VARCHAR(150)    NOT NULL, "
                 + " UPLOAD         BIT                     , "
                 + " DOWNLOAD       BIT                     , "
                 + " GGID           VARCHAR(150)    NULL, "
-                + " ADD            INT                     );";
+                + " ADDSTATUS            INT                     );";
         String sql2 = "CREATE TABLE LOG "
-                + "(ID INTEGER PRIMARY KEY     AUTOINCREMENT,"
+                + "(ID INTEGER PRIMARY KEY     IDENTITY(1,1),"
                 + " ERROR          TEXT    NOT NULL );";
         stmt.executeUpdate(drop);
         stmt.executeUpdate(sql);

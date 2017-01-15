@@ -29,6 +29,11 @@ public class AddMovie extends Thread {
     public void run() {
         DBController contr = new DBController();
         while (!interrupted()) {
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
+            }
             List<String> allFille = FileAndFolder.getAllFille();
             for (String string : allFille) {
                 Movie checkAddMovie = null;

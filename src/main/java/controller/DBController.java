@@ -33,7 +33,7 @@ public class DBController {
         ResultSet executeQuery = check.executeQuery();
         boolean next = executeQuery.next();
         if (!next) {
-            PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILE,QUALITY,UPLOAD,DOWNLOAD,SEASON,ADD) VALUES (?,?,?,?,?,?,?,?,?)");
+            PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILENAME,QUALITY,UPLOAD,DOWNLOAD,SEASON,ADDSTATUS) VALUES (?,?,?,?,?,?,?,?,?)");
             pt.setString(1, name);
             pt.setString(2, year);
             pt.setString(3, url);
@@ -57,7 +57,7 @@ public class DBController {
         ResultSet executeQuery = check.executeQuery();
         boolean next = executeQuery.next();
         if (!next) {
-            PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILE,UPLOAD,DOWNLOAD,ADD) VALUES (?,?,?,?,?,?,?)");
+            PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILENAME,UPLOAD,DOWNLOAD,ADDSTATUS) VALUES (?,?,?,?,?,?,?)");
             pt.setInt(1, movieId);
             pt.setInt(2, ep);
             pt.setString(3, url);
@@ -73,10 +73,10 @@ public class DBController {
     public void updateDownload(String file) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET DOWNLOAD = 1 WHERE FILE = ?");
+        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET DOWNLOAD = 1 WHERE FILENAME = ?");
         pt.setString(1, file);
         pt.execute();
-        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET DOWNLOAD = 1 WHERE FILE = ?");
+        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET DOWNLOAD = 1 WHERE FILENAME = ?");
         pt1.setString(1, file);
         pt1.execute();
         conn.close();
@@ -85,11 +85,11 @@ public class DBController {
     public void updateUpload(String file, String ggId) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET UPLOAD = 1, GGID =? WHERE FILE = ?");
+        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET UPLOAD = 1, GGID =? WHERE FILENAME = ?");
         pt.setString(1, ggId);
         pt.setString(2, file);
         pt.execute();
-        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET UPLOAD = 1, GGID =? WHERE FILE = ?");
+        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET UPLOAD = 1, GGID =? WHERE FILENAME = ?");
         pt1.setString(1, ggId);
         pt1.setString(1, file);
         pt1.execute();
@@ -99,11 +99,11 @@ public class DBController {
         public void updateAdd(String file,int add) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET ADD = ? WHERE FILE = ?");
+        PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET ADDSTATUS = ? WHERE FILENAME = ?");
         pt.setInt(1, add);
         pt.setString(2, file);
         pt.execute();
-        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET ADD = ? WHERE FILE = ?");
+        PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET ADDSTATUS = ? WHERE FILENAME = ?");
         pt1.setInt(1, add);
         pt1.setString(1, file);
         pt1.execute();
@@ -169,7 +169,7 @@ public class DBController {
         String sql1 = "SELECT * FROM EPS WHERE DOWNLOAD = 0";
         ResultSet rs1 = stmt.executeQuery(sql1);
         while (rs1.next()) {
-            lstFile.add(new DownloadInfo(rs1.getInt(1), rs.getString(4), rs.getString(5), rs.getByte(3)));
+            lstFile.add(new DownloadInfo(rs1.getInt(1), rs1.getString(4), rs1.getString(5), rs1.getByte(3)));
         }
         conn.close();
         return lstFile;
@@ -178,21 +178,21 @@ public class DBController {
     public FileUpload findFile(String fileName) throws SQLException, ClassNotFoundException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ?");
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILENAME = ?");
         pst.setString(1, fileName);
         ResultSet rs = pst.executeQuery();
         boolean next = rs.next();
         if (next) {
-            FileUpload fileUpload = new FileUpload(rs.getInt(1), "movie", rs.getString(5), rs.getByte(6)); ;
+            FileUpload fileUpload = new FileUpload(rs.getInt(1), "movie", rs.getString(5), rs.getByte(7)); ;
             conn.close();
             return fileUpload;
         }
-        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILE = ?");
+        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILENAME = ?");
         pst1.setString(1, fileName);
         ResultSet rs1 = pst1.executeQuery();
         boolean next1 = rs1.next();
         if (next1) {
-            FileUpload fileUpload = new FileUpload(rs1.getInt(1), "eps", rs.getString(5), rs.getByte(6));
+            FileUpload fileUpload = new FileUpload(rs1.getInt(1), "eps", rs1.getString(5), rs1.getByte(6));
             conn.close();
             return fileUpload;
         }
@@ -202,7 +202,7 @@ public class DBController {
     public Movie checkAddMovie(String fileName) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM MOVIES WHERE FILENAME = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
         pst.setString(1, fileName);
         ResultSet rs = pst.executeQuery();
         boolean next = rs.next();
@@ -217,7 +217,7 @@ public class DBController {
     public Episode checkAddEps(String fileName) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
-        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILE = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
+        PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM EPS WHERE FILENAME = ? AND UPLOAD = 1 AND DOWNLOAD = 1");
         pst1.setString(1, fileName);
         ResultSet rs = pst1.executeQuery();
         boolean next = rs.next();

@@ -29,7 +29,7 @@ public class UpdateUpload extends Thread {
     public void run() {
         while (!interrupted()) {
             try {
-                Thread.sleep(10000);
+                Thread.sleep(30000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(UpdateUpload.class.getName()).log(Level.SEVERE, null, ex);
             }
