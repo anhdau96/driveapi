@@ -22,7 +22,7 @@ public class Smovies {
     private Smovies() {
     }
 
-    public boolean createEpisode(String movieName,String season ,String episode,String googleid,String year) throws URISyntaxException, IOException {
+    public String createEpisode(String movieName,String season ,String episode,String googleid,String year) throws URISyntaxException, IOException {
         URI uri = new URIBuilder()
                 .setScheme("http")
                 .setHost(ConfigService.getInstance().get("apiURL"))
@@ -34,8 +34,8 @@ public class Smovies {
                 .setParameter("googleid", googleid)
                 .build();
         HttpGet httpget = new HttpGet(uri);
-        new JsonReader().readJsonFromUrl(httpget.getURI().toString());
-        return true;
+
+        return new JsonReader().readJsonFromUrl(httpget.getURI().toString());
     }
 
     public String createMovie(String movieName,String year,String googleid,String quality) throws URISyntaxException, IOException {
