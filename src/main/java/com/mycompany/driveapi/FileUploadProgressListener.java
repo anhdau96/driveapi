@@ -1,11 +1,9 @@
 package com.mycompany.driveapi;
 
-import UI.UploadFile;
-import UI.UploadManager;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
+import crawl.CrawlUI;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.text.NumberFormat;
 
@@ -15,26 +13,29 @@ import java.text.NumberFormat;
 public class FileUploadProgressListener implements MediaHttpUploaderProgressListener {
 
     private String progress = "";
-    private UploadFile uploadManager;
-    public FileUploadProgressListener(UploadFile uploadManager) {
-    this.uploadManager=uploadManager;
+    private CrawlUI uploadManager;
+    public FileUploadProgressListener(CrawlUI uploadManager) {
+        this.uploadManager=uploadManager;
     }
 
     @Override
     public void progressChanged(MediaHttpUploader mediaHttpUploader) throws IOException {
+        
         switch (mediaHttpUploader.getUploadState()) {
             case INITIATION_STARTED:
-                uploadManager.updateStatus("Upload Initiation has started.");
+                uploadManager.updateStatus("Upload Initiation has started.\n");
+                System.out.println("start");
                 break;
             case INITIATION_COMPLETE:
-                uploadManager.updateStatus("Upload Initiation is Complete.");
+                uploadManager.updateStatus("Upload Initiation is Complete.\n");
                 break;
             case MEDIA_IN_PROGRESS:
+                System.out.println("50%");
                 uploadManager.updateStatus("Upload is In Progress: "
-                        + NumberFormat.getPercentInstance().format(mediaHttpUploader.getProgress()));
+                        + NumberFormat.getPercentInstance().format(mediaHttpUploader.getProgress())+ "\n");
                 break;
             case MEDIA_COMPLETE:
-                uploadManager.updateStatus("Upload is Complete!");
+                uploadManager.updateStatus("Upload is Complete! \n");
                 break;
         }
     }

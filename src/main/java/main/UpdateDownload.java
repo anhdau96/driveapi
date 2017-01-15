@@ -5,8 +5,11 @@
  */
 package main;
 
+import Config.ConfigService;
+import com.mycompany.driveapi.UploadThread;
 import controller.DBController;
 import fileandfolder.FileAndFolder;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +25,7 @@ public class UpdateDownload extends Thread {
     public void run() {
         while (!interrupted()) {
             try {
-                sleep(300000);
+                sleep(30000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(UpdateDownload.class.getName()).log(Level.SEVERE, null, ex);
             }

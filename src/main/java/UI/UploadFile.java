@@ -15,7 +15,7 @@ public class UploadFile extends JFrame {
 
     public UploadFile(File file) throws HeadlessException {
         initComponents();
-        new UploadThread(file);
+//        new UploadThread(file);
     }
 
     private void initComponents() {

@@ -24,7 +24,7 @@ import model.Movie;
  * @author Administrator
  */
 public class AddMovie extends Thread {
-
+    
     @Override
     public void run() {
         DBController contr = new DBController();
@@ -40,11 +40,10 @@ public class AddMovie extends Thread {
                 if (checkAddMovie != null) {
                     try {
                         String createMovie = Smovies.getInstance().createMovie(checkAddMovie.name, checkAddMovie.year, checkAddMovie.ggId, checkAddMovie.quality);
-                        if (Integer.parseInt(createMovie) == 1) {
-                            File f = new File(ConfigService.getInstance().get("savePath" + "\\" + string + ".mp4"));
-                            f.delete();
-                        }
-                    } catch (URISyntaxException | IOException ex) {
+                        contr.updateAdd(string, Integer.parseInt(createMovie));
+                        File f = new File(ConfigService.getInstance().get("savePath" + "\\" + string + ".mp4"));
+                        f.delete();
+                    } catch (URISyntaxException | IOException | ClassNotFoundException | SQLException ex) {
                         Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -57,10 +56,11 @@ public class AddMovie extends Thread {
 //                if (checkAddEps != null) {
 //                    try {
 //                        Movie movieSeri = contr.getMovieSeri(checkAddEps.movieId);
-//                        Smovies.getInstance().createEpisode(movieSeri.name, movieSeri., string, string);
-//                    } catch (ClassNotFoundException ex) {
-//                        Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
-//                    } catch (SQLException ex) {
+//                        Smovies.getInstance().createEpisode(movieSeri.name, movieSeri.season, String.valueOf(checkAddEps.ep), checkAddEps.ggId);
+//                        contr.updateAdd(string, Integer.parseInt(createMovie));
+//                        File f = new File(ConfigService.getInstance().get("savePath" + "\\" + string + ".mp4"));
+//                        f.delete();
+//                    } catch (ClassNotFoundException | SQLException | URISyntaxException | IOException ex) {
 //                        Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
 //                    }
 //                    

@@ -69,11 +69,9 @@ public class Crawl extends Thread {
                             if (movieOrSerie.equals("movie")) {
                                 boolean existMovies = existMovies(name, year);
                                 if (!existMovies) {
-                                    System.out.println(name + " chua co" + "\n");
                                     cUI.appendText(name + " chua co" + "\n");
-                                    contr.insertMovies(name, year, link, System.currentTimeMillis() + "", status);
+                                    contr.insertMovies(name, year, link, System.currentTimeMillis() + "", status,0);
                                 } else {
-                                    System.out.println(name + " da co" + "\n");
                                     cUI.appendText(name + " da co" + "\n");
                                 }
                             } else {
@@ -91,7 +89,7 @@ public class Crawl extends Thread {
                                 } else {
                                     cUI.appendText(name + " da co - So tap: " + getQuanEp(status) + "\n");
                                 }
-                                contr.insertMovies(name, year, link, System.currentTimeMillis() + "", "serie");
+                                contr.insertMovies(name, year, link, System.currentTimeMillis() + "", "serie",Integer.parseInt(season));
                                 int quanEp = getQuanEp(status);
                                 int seriId = contr.getMovieId(name, year);
                                 for (int h = 1; h < quanEp; h++) {

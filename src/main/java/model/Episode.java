@@ -19,6 +19,7 @@ public class Episode {
     public byte download;
     public byte upload;
     public String ggId;
+    public int add;
     
     public Episode(int id, int movieId, int ep, String url, String file, byte download, byte upload) {
         this.id = id;

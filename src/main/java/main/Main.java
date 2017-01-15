@@ -28,7 +28,7 @@ public class Main extends Thread{
         File file = new File("C:");
         long freeSpace = file.getFreeSpace();
 //        System.out.println(freeSpace / 1024 / 1024 / 1024 + "GB");
-        return (freeSpace / 1024 / 1024 / 1024) >= 6;
+        return (freeSpace / 1024 / 1024 / 1024) >=8 ;
     }
 
     public void runThread() {
@@ -46,7 +46,9 @@ public class Main extends Thread{
         updateDown.start();
         Download download = new Download();
         download.start();
-
+        UpdateUpload upload = new UpdateUpload();
+        upload.c = c.cUI;
+        upload.start();
         while (true) {
             System.out.println(checkStorage());
             System.out.println("suspended: " + download.isSuspended());
