@@ -72,9 +72,9 @@ public class DriveManager {
         driveFile.setMimeType(Files.probeContentType(file.toPath()));
         driveFile.setName(file.getName());
 
-        ArrayList<String> objects = new ArrayList<>();
-        objects.add("1VhD1CrtG83avoACHqGR2SpQig67zrkDrGBe3rZC4qwQ");
-        driveFile.setParents(objects);
+//        ArrayList<String> objects = new ArrayList<>();
+//        objects.add("1VhD1CrtG83avoACHqGR2SpQig67zrkDrGBe3rZC4qwQ");
+//        driveFile.setParents(objects);
 
         FileContent fileContent = new FileContent(Files.probeContentType(file.toPath()), file);
         Drive.Files.Create create = service.files().create(driveFile, fileContent).setFields("*");
