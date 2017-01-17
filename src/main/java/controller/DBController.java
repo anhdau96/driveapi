@@ -91,7 +91,7 @@ public class DBController {
         pt.execute();
         PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET UPLOAD = 1, GGID =? WHERE FILENAME = ?");
         pt1.setString(1, ggId);
-        pt1.setString(1, file);
+        pt1.setString(2, file);
         pt1.execute();
         conn.close();
     }
@@ -105,7 +105,7 @@ public class DBController {
         pt.execute();
         PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET ADDSTATUS = ? WHERE FILENAME = ?");
         pt1.setInt(1, add);
-        pt1.setString(1, file);
+        pt1.setString(2, file);
         pt1.execute();
         conn.close();
     }
