@@ -103,8 +103,8 @@ public class DownloadUlti {
             } catch (Exception ex) {
             }
         } while (link == null || link.equals(""));
-        System.out.println(elementsByTag.get(0).toString());
-        System.out.println(link);
+//        System.out.println(elementsByTag.get(0).toString());
+//        System.out.println(link);
         try {
             getGoogleDownload(link, title);
         } catch (IOException ex) {
