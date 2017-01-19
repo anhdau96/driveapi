@@ -42,22 +42,8 @@ public class UploadThread extends Thread {
             DBController db = new DBController();
             db.updateUpload(FilenameUtils.removeExtension(file.getName()), upload.getId());
             uploadFrame.updateStatus("new thread calling smovies api \n");
-            Movie checkAddMovie = db.checkAddMovie(FilenameUtils.removeExtension(file.getName()));
-            if (checkAddMovie != null) {
-                String createMovie = Smovies.getInstance().createMovie(checkAddMovie.name, checkAddMovie.year, checkAddMovie.ggId, checkAddMovie.quality);
-                System.out.println(createMovie);
-                if (Integer.parseInt(createMovie) == 1) {
-                    File f = new File(ConfigService.getInstance().get("savePath") + "\\" + file.getName());
-                    f.delete();
-                }
-            } else {
-                System.out.println("123");
-            }
-
         } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(UploadThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

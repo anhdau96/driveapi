@@ -56,6 +56,7 @@ public class Download extends Thread {
                     }
                     System.out.println(downloadInfo.toString());
                     DownloadUlti.download(downloadInfo.link.concat("watching.html"), downloadInfo.file, downloadInfo.eps);
+                    contr.updateDownload(downloadInfo.file);
                 }
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

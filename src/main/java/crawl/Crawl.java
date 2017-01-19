@@ -44,7 +44,8 @@ public class Crawl extends Thread {
             Element element = get.getElementsByAttributeValueMatching("class", "movies-letter").get(0);
 //            System.out.println(element);
             Elements lstABC = element.getElementsByTag("a");
-            for (Element element1 : lstABC) {
+            for (int l=1;l<10;l++) {
+                Element element1 = lstABC.get(l);
 //                System.out.println(element1);
                 String attr = element1.attr("href");
                 Document get1 = Jsoup.connect(attr).userAgent("Chrome").get();
@@ -79,7 +80,7 @@ public class Crawl extends Thread {
                                 String season;
                                 if (name.lastIndexOf(" - Season") != -1) {
                                     title = name.substring(0, name.lastIndexOf(" - Season"));
-                                    season = name.substring(name.lastIndexOf(" - Season") + " - Season ".length(), name.length());
+                                    season = name.substring(name.lastIndexOf(" - Season") + " - ".length(), name.length()).split(" ")[1];
                                 } else {
                                     title = name;
                                     season = "1";

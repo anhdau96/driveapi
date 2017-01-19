@@ -5,6 +5,7 @@
  */
 package controller;
 
+import Config.ConfigService;
 import database.Connect;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +25,7 @@ import model.Movie;
  */
 public class DBController {
 
-    public void insertMovies(String name, String year, String url, String file, String quality,int season) throws ClassNotFoundException, SQLException {
+    public void insertMovies(String name, String year, String url, String file, String quality, int season) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
         PreparedStatement check = conn.prepareStatement("SELECT * FROM MOVIES WHERE NAME = ? AND YEAR = ?");
@@ -33,7 +34,7 @@ public class DBController {
         ResultSet executeQuery = check.executeQuery();
         boolean next = executeQuery.next();
         if (!next) {
-            PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILENAME,QUALITY,UPLOAD,DOWNLOAD,SEASON,ADDSTATUS) VALUES (?,?,?,?,?,?,?,?,?)");
+            PreparedStatement pt = conn.prepareStatement("INSERT INTO MOVIES (NAME,YEAR,URL,FILENAME,QUALITY,UPLOAD,DOWNLOAD,SEASON,ADDSTATUS,VPS) VALUES (?,?,?,?,?,?,?,?,?,?)");
             pt.setString(1, name);
             pt.setString(2, year);
             pt.setString(3, url);
@@ -43,6 +44,7 @@ public class DBController {
             pt.setInt(7, 0);
             pt.setInt(8, season);
             pt.setInt(9, 0);
+            pt.setInt(10, Integer.parseInt(ConfigService.getInstance().get("VPS")));
             pt.execute();
         }
         conn.close();
@@ -57,7 +59,7 @@ public class DBController {
         ResultSet executeQuery = check.executeQuery();
         boolean next = executeQuery.next();
         if (!next) {
-            PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILENAME,UPLOAD,DOWNLOAD,ADDSTATUS) VALUES (?,?,?,?,?,?,?)");
+            PreparedStatement pt = conn.prepareStatement("INSERT INTO EPS (MOVIEID,EP,URL,FILENAME,UPLOAD,DOWNLOAD,ADDSTATUS,VPS) VALUES (?,?,?,?,?,?,?,?)");
             pt.setInt(1, movieId);
             pt.setInt(2, ep);
             pt.setString(3, url);
@@ -65,6 +67,7 @@ public class DBController {
             pt.setInt(5, 0);
             pt.setInt(6, 0);
             pt.setInt(7, 0);
+            pt.setInt(8, Integer.parseInt(ConfigService.getInstance().get("VPS")));
             pt.execute();
         }
         conn.close();
@@ -95,17 +98,19 @@ public class DBController {
         pt1.execute();
         conn.close();
     }
-    
-        public void updateAdd(String file,int add) throws ClassNotFoundException, SQLException {
+
+    public void updateAdd(String file, int add) throws ClassNotFoundException, SQLException {
         Connect c = new Connect();
         Connection conn = c.getConnection();
         PreparedStatement pt = conn.prepareStatement("UPDATE MOVIES SET ADDSTATUS = ? WHERE FILENAME = ?");
         pt.setInt(1, add);
         pt.setString(2, file);
+        System.out.println(pt.toString());
         pt.execute();
         PreparedStatement pt1 = conn.prepareStatement("UPDATE EPS SET ADDSTATUS = ? WHERE FILENAME = ?");
         pt1.setInt(1, add);
         pt1.setString(2, file);
+        System.out.println(pt1.toString());
         pt1.execute();
         conn.close();
     }
@@ -160,13 +165,13 @@ public class DBController {
         Connect c = new Connect();
         Connection conn = c.getConnection();
         Statement stmt = conn.createStatement();
-        String sql = "SELECT * FROM MOVIES WHERE QUALITY !='serie' AND DOWNLOAD = 0";
+        String sql = "SELECT * FROM MOVIES WHERE QUALITY !='serie' AND DOWNLOAD = 0 AND VPS = "+Integer.parseInt(ConfigService.getInstance().get("VPS"));
         ResultSet rs = stmt.executeQuery(sql);
         List<DownloadInfo> lstFile = new ArrayList<>();
         while (rs.next()) {
             lstFile.add(new DownloadInfo(rs.getInt(1), rs.getString(4), rs.getString(5), 1));
         }
-        String sql1 = "SELECT * FROM EPS WHERE DOWNLOAD = 0";
+        String sql1 = "SELECT * FROM EPS WHERE DOWNLOAD = 0 AND VPS = " +Integer.parseInt(ConfigService.getInstance().get("VPS"));
         ResultSet rs1 = stmt.executeQuery(sql1);
         while (rs1.next()) {
             lstFile.add(new DownloadInfo(rs1.getInt(1), rs1.getString(4), rs1.getString(5), rs1.getByte(3)));
@@ -183,7 +188,7 @@ public class DBController {
         ResultSet rs = pst.executeQuery();
         boolean next = rs.next();
         if (next) {
-            FileUpload fileUpload = new FileUpload(rs.getInt(1), "movie", rs.getString(5), rs.getByte(7)); ;
+            FileUpload fileUpload = new FileUpload(rs.getInt(1), "movie", rs.getString(5), rs.getByte(7));;
             conn.close();
             return fileUpload;
         }
@@ -222,8 +227,9 @@ public class DBController {
         ResultSet rs = pst1.executeQuery();
         boolean next = rs.next();
         if (next) {
+            Episode e = new Episode(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getByte(6), rs.getByte(7), rs.getString(8));
             conn.close();
-            return new Episode(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getByte(6), rs.getByte(7), rs.getString(8));
+            return e;
         }
         return null;
     }
@@ -236,11 +242,11 @@ public class DBController {
         ResultSet rs = pst.executeQuery();
         Movie m = null;
         rs.next();
-        m = new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getByte(7), rs.getByte(8),rs.getString(9));
+        m = new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getByte(7), rs.getByte(8), rs.getString(9));
         conn.close();
         return m;
     }
-    
+
 //    public int getYear(String seriName){
 //        Connect c = new Connect();
 //        Connection conn = c.getConnection();

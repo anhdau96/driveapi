@@ -34,7 +34,7 @@ public class Smovies {
                 .setParameter("googleid", googleid)
                 .build();
         HttpGet httpget = new HttpGet(uri);
-
+        System.out.println(httpget);
         return new JsonReader().readJsonFromUrl(httpget.getURI().toString());
     }
 

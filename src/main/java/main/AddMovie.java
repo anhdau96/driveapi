@@ -46,7 +46,7 @@ public class AddMovie extends Thread {
                     try {
                         String createMovie = Smovies.getInstance().createMovie(checkAddMovie.name, checkAddMovie.year, checkAddMovie.ggId, checkAddMovie.quality);
                         contr.updateAdd(string, Integer.parseInt(createMovie));
-                        File f = new File(ConfigService.getInstance().get("savePath" + "\\" + string + ".mp4"));
+                        File f = new File(ConfigService.getInstance().get("savePath") + "\\" + string + ".mp4");
                         f.delete();
                     } catch (URISyntaxException | IOException | ClassNotFoundException | SQLException ex) {
                         Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,7 +63,7 @@ public class AddMovie extends Thread {
                         Movie movieSeri = contr.getMovieSeri(checkAddEps.movieId);
                         String createEpisode = Smovies.getInstance().createEpisode(movieSeri.name, movieSeri.season, String.valueOf(checkAddEps.ep), checkAddEps.ggId,movieSeri.year);
                         contr.updateAdd(string, Integer.parseInt(createEpisode));
-                        File f = new File(ConfigService.getInstance().get("savePath" + "\\" + string + ".mp4"));
+                        File f = new File(ConfigService.getInstance().get("savePath") + "\\" + string + ".mp4");
                         f.delete();
                     } catch (ClassNotFoundException | SQLException | URISyntaxException | IOException ex) {
                         Logger.getLogger(AddMovie.class.getName()).log(Level.SEVERE, null, ex);

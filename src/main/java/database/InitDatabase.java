@@ -33,7 +33,8 @@ public class InitDatabase {
                 + " DOWNLOAD       BIT                     , "
                 + " GGID           VARCHAR(150)    NULL,     "
                 + " SEASON         INT                     , "
-                + " ADDSTATUS       INT                      );";
+                + " ADDSTATUS       INT                     ,"
+                + " VPS            INT                      );";
         String sql1 = "CREATE TABLE EPS "
                 + "(ID INT PRIMARY KEY             IDENTITY(1,1),"
                 + " MOVIEID        INT             NOT NULL, "
@@ -43,7 +44,8 @@ public class InitDatabase {
                 + " UPLOAD         BIT                     , "
                 + " DOWNLOAD       BIT                     , "
                 + " GGID           VARCHAR(150)    NULL, "
-                + " ADDSTATUS            INT                     );";
+                + " ADDSTATUS            INT                     ,"
+                + " VPS            INT                      );";;
         String sql2 = "CREATE TABLE LOG "
                 + "(ID INTEGER PRIMARY KEY     IDENTITY(1,1),"
                 + " ERROR          TEXT    NOT NULL );";

@@ -42,13 +42,15 @@ public class Main extends Thread{
         Crawl c = new Crawl();
         c.cUI = new CrawlUI();
         c.start();
-        UpdateDownload updateDown = new UpdateDownload();
-        updateDown.start();
+//        UpdateDownload updateDown = new UpdateDownload();
+//        updateDown.start();
         Download download = new Download();
         download.start();
         UpdateUpload upload = new UpdateUpload();
         upload.c = c.cUI;
         upload.start();
+        AddMovie add = new AddMovie();
+        add.start();
         while (true) {
             System.out.println(checkStorage());
             System.out.println("suspended: " + download.isSuspended());
