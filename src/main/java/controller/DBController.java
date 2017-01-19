@@ -242,7 +242,7 @@ public class DBController {
         ResultSet rs = pst.executeQuery();
         Movie m = null;
         rs.next();
-        m = new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getByte(7), rs.getByte(8), rs.getString(9));
+        m = new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getByte(7), rs.getByte(8), rs.getString(9),rs.getString(10));
         conn.close();
         return m;
     }

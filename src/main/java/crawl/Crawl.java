@@ -44,7 +44,7 @@ public class Crawl extends Thread {
             Element element = get.getElementsByAttributeValueMatching("class", "movies-letter").get(0);
 //            System.out.println(element);
             Elements lstABC = element.getElementsByTag("a");
-            for (int l=1;l<10;l++) {
+            for (int l=0;l<10;l++) {
                 Element element1 = lstABC.get(l);
 //                System.out.println(element1);
                 String attr = element1.attr("href");
@@ -90,9 +90,9 @@ public class Crawl extends Thread {
                                 } else {
                                     cUI.appendText(name + " da co - So tap: " + getQuanEp(status) + "\n");
                                 }
-                                contr.insertMovies(name, year, link, System.currentTimeMillis() + "", "serie",Integer.parseInt(season));
+                                contr.insertMovies(title, year, link, System.currentTimeMillis() + "", "serie",Integer.parseInt(season));
                                 int quanEp = getQuanEp(status);
-                                int seriId = contr.getMovieId(name, year);
+                                int seriId = contr.getMovieId(title, year);
                                 for (int h = 1; h < quanEp; h++) {
                                     if (!existEps(title, year, season, h)) {
                                         cUI.appendText("Tap " + h + " chua co\n");
@@ -108,10 +108,45 @@ public class Crawl extends Thread {
                     Elements lstMlNew = get1.getElementsByClass("mlnew");
                     for (Element element2 : lstMlNew) {
                         String link = element2.getElementsByTag("td").get(1).getElementsByTag("a").get(0).attr("href");
-                        String title = element2.getElementsByTag("td").get(1).getElementsByTag("a").get(0).attr("title");
-                        String year = element2.getElementsByTag("td").get(3).html();
-                        String status = element2.getElementsByTag("td").get(4).html().trim();
-
+                            String name = element2.getElementsByTag("td").get(1).getElementsByTag("a").get(0).attr("title").trim();
+                            String year = element2.getElementsByTag("td").get(3).html().trim();
+                            String status = element2.getElementsByTag("td").get(4).html().trim();
+                            String movieOrSerie = movieOrSerie(status);
+                            if (movieOrSerie.equals("movie")) {
+                                boolean existMovies = existMovies(name, year);
+                                if (!existMovies) {
+                                    cUI.appendText(name + " chua co" + "\n");
+                                    contr.insertMovies(name, year, link, System.currentTimeMillis() + "", status,1);
+                                } else {
+                                    cUI.appendText(name + " da co" + "\n");
+                                }
+                            } else {
+                                String title;
+                                String season;
+                                if (name.lastIndexOf(" - Season") != -1) {
+                                    title = name.substring(0, name.lastIndexOf(" - Season"));
+                                    season = name.substring(name.lastIndexOf(" - Season") + " - ".length(), name.length()).split(" ")[1];
+                                } else {
+                                    title = name;
+                                    season = "1";
+                                }
+                                if (!existSerie(title, year, season)) {
+                                    cUI.appendText(name + " chua co - So tap: " + getQuanEp(status) + "\n");
+                                } else {
+                                    cUI.appendText(name + " da co - So tap: " + getQuanEp(status) + "\n");
+                                }
+                                contr.insertMovies(title, year, link, System.currentTimeMillis() + "", "serie",Integer.parseInt(season));
+                                int quanEp = getQuanEp(status);
+                                int seriId = contr.getMovieId(title, year);
+                                for (int h = 1; h < quanEp; h++) {
+                                    if (!existEps(title, year, season, h)) {
+                                        cUI.appendText("Tap " + h + " chua co\n");
+                                        contr.insertEps(seriId, h, link, System.currentTimeMillis() + "");
+                                    } else {
+                                        cUI.appendText("Tap " + h + " da co\n");
+                                    }
+                                }
+                            }
                     }
                 }
             }
