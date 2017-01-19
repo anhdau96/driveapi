@@ -28,7 +28,7 @@ public class Main extends Thread{
         File file = new File("C:");
         long freeSpace = file.getFreeSpace();
 //        System.out.println(freeSpace / 1024 / 1024 / 1024 + "GB");
-        return (freeSpace / 1024 / 1024 / 1024) >=15 ;
+        return (freeSpace / 1024 / 1024 / 1024) >=50 ;
     }
 
     public void runThread() {
