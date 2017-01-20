@@ -14,18 +14,21 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  * @author Viet Bac
  */
 public class ChromeDriverClient {
+
     private static WebDriver chromeDriver = null;
 
     private ChromeDriverClient() {
     }
-    
-    public static WebDriver getChromeDriver(){
-        if (chromeDriver == null) {
-            DesiredCapabilities caps = DesiredCapabilities.chrome();
-            caps.setJavascriptEnabled(true);
-            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-            chromeDriver = new ChromeDriver(caps);
-        }
+
+    public static WebDriver getChromeDriver() {
+        DesiredCapabilities caps = DesiredCapabilities.chrome();
+        caps.setJavascriptEnabled(true);
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        chromeDriver = new ChromeDriver(caps);
         return chromeDriver;
+    }
+    
+    public static void quitChrome(){
+        chromeDriver.quit();
     }
 }

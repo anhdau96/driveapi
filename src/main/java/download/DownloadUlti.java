@@ -21,6 +21,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 /**
  *
@@ -103,6 +104,7 @@ public class DownloadUlti {
             } catch (Exception ex) {
             }
         } while (link == null || link.equals(""));
+        ChromeDriverClient.quitChrome();
 //        System.out.println(elementsByTag.get(0).toString());
 //        System.out.println(link);
         try {
